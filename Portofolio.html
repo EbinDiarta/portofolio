@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Mahasiswa</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --bg: #fff;
+        }
+
+        .dark-mode {
+            --primary: #3498db;
+            --secondary: #9fd5eb;
+            --light: #2c3e50;
+            --dark: #ecf0f1;
+            --text: #ecf0f1;
+            --bg: #1a1a1a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--bg);
+            padding: 0;
+            margin: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--light);
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary);
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            padding: 2rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            text-align: center;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin: 1rem 0;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin: 0.5rem 0;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .skill-card {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .education-item {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        #album {
+            padding: 2rem 0;
+            background-color: var(--bg);
+            text-align: center;
+        }
+
+        .album-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .album-item {
+            width: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            background-color: var(--light);
+        }
+
+        .album-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+            cursor: pointer;
+        }
+
+        .album-item:hover {
+            transform: scale(1.05);
+        }
+
+        .photo-desc {
+            text-align: center;
+            font-size: 0.85rem;
+            margin: 0.5rem 0 1rem;
+            color: var(--text);
+        }
+
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            top: 0; left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+            box-shadow: 0 0 25px rgba(255,255,255,0.3);
+            animation: zoom 0.3s ease;
+        }
+
+        @keyframes zoom {
+            from { transform: scale(0.5); opacity: 0;}
+            to { transform: scale(1); opacity: 1;}
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: var(--light);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links {
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: var(--light);
+            margin: 0 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--secondary);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: var(--secondary);
+            color: var(--light);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        nav {
+            background-color: var(--primary);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--primary);
+                align-items: center;
+                justify-content: center;
+                transition: left 0.3s;
+            }
+
+            nav ul.active {
+                left: 0;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .skill-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="nav-toggle" id="navToggle">☰</button>
+    <nav>
+        <ul id="navMenu">
+            <li><a href="#about">Tentang</a></li>
+            <li><a href="#education">Pendidikan</a></li>
+            <li><a href="#skills">Keterampilan</a></li>
+            <li><a href="#album">Album Kegiatan</a></li>
+            <li><a href="#contact">Kontak</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <button class="theme-toggle" id="themeToggle">☀️</button>
+        <img src="GLP.jpg" alt="Foto profil mahasiswa" class="profile-img" onclick="openLightbox(this)">
+        <h1>Ebin Diarta Pratama</h1>
+        <p>Informatika | Universitas Jambi</p>
+        <p>"Kegagalan bukanlah akhir, melainkan awal perjalanan menuju kesuksesan"</p>
+        <a href="#contact" class="btn">Hubungi Saya</a>
+    </header>
+
+    <div class="container">
+        <section id="about">
+            <h2>Tentang Saya</h2>
+            <p>
+                Perkenalkan saya Ebin Diarta Pratama mahasiswa baru Informatika Universitas Jambi. Saya berasal dari desa Bunga Tanjung
+                merupakan lulusan MAN 1 KERINCI. Saya memilih jurusan ini karena memiliki ketertarikan besar pada dunia teknologi dan komputer. 
+                Khususnya dalam bidang programan dan pengembangan website. Saya senang mempelajari bagaimana sebuah situs dibangun dan berfungsi,
+                mulai dari tampilan hingga logika yang berjalan di belakangnya.
+            </p>
+            <p>
+                Di luar kegiatan akademik formal, saya juga sering belajar tentang programan di berbagai situs dan platform online, 
+                saya tertarik mempelajari bahasa programan seperti Html, Css, dan JavaScript serta bahasa lainnya. Selain itu,
+                saya sering belajar membuat projek seperti website, kalkulator, dan sejenisnya.
+                Ke depannya, saya ingin terus mengembangkan kemampuan saya dan mempelajari lebih banyak hal tentang dunia programan.
+            </p>
+            <p>
+                Selain belajar, saya juga suka bermain game eFootball Mobile. Awalnya, saya hanya bermain untuk hiburan. 
+                Namun seiring waktu, saya mulai tertarik mengikuti turnamen-turnamen online dan bergabung dengan clan e-Sport. 
+                Tanpa disangka, di turnamen battle clan saya pernah dipercaya menjadi leader untuk memimpin tim kami di turnamen tersebut. 
+                Dari sini saya belajar banyak hal-tentang strategi, komunikasi, dan kerjasama tim. Ternyata, sebuah permainan pun bisa menjadi
+                tempat untuk mengasah jiwa kepemimpinan dan tanggung jawab.
+            </p>
+            <p>
+                Masa terbaik dalam hidup saya adalah saat bersekolah di MAN 1 KERINCI, khususnya di lokal MIA 2. Di sana, saya bertemu teman-teman 
+                yang luar biasa. Meskipun hanya tiga tahun, kenangan yang tercipta sangatlah berkesan. Kami telah melewati banyak hal bersama
+                suka maupun duka, tawa, kerjasama, dan tantangan. Setiap masalah kami hadapi bersama, seperti sebuah keluarga yang saling menguatkan.
+                Perjalanan itu terasa singkat, namun penuh makna. Hingga akhirnya, kami harus berpisah untuk mengejar cita-cita masing-masing.  
+            </p>
+        </section>
+
+        <section id="education">
+            <h2>Pendidikan</h2>
+            <div class="education-item">
+                <h3>Universitas Jambi</h3>
+                <p>Informatika | 2025 - Sekarang</p>
+                <p>Diterima melalui jalur SNBP</p>
+            </div>
+            <div class="education-item">
+                <h3>Man 1 Kerinci</h3>
+                <p>Jurusan IPA | 2022 - 2025</p>
+                <p>Lulus dengan predikat nilai yang memuaskan</p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Keterampilan</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <h3>Web Development</h3>
+                    <p>HTML, CSS, JavaScript</p>
+                    <p>Projek: website pribadi</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Desain Grafis dan Video Editing</h3>
+                    <p>Canva, KineMaster, Dsb</p>
+                    <p>Projek: Poster, Video Tutorial, Dll </p>
+                </div>
+                <div class="skill-card">
+                    <h3>Gamers</h3>
+                    <p>eFootball Mobile</p>
+                    <p>Kontribusi: Leaders Clan di Turnament, Best Player, dan Top Score</p>
+                </div>
+                <div class="skill-card">
+                    <h3>Lainnya</h3>
+                    <p>Word, Excel, PowerPoint, DLL</p>
+                    <p>Projek: Makalah, Tugas Sekolah, Dsb</p>
+                </div>
+            </div>
+        </section>
+        <section id="album">
+            <h2>Album Kenangan</h2>
+            <p>*klik untuk memperbesar</p>
+            <div class="album-container">
+                <div class="album-item"><img src="portofolio.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Travel Mode</p></div>
+                <div class="album-item"><img src="MP.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">My Greatest Support</p></div>
+                <div class="album-item"><img src="B.png" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Game Face On</p></div>
+                <div class="album-item"><img src="first.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">From First Meet to Real Friends </p></div>
+                <div class="album-item"><img src="voly.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Boys' on the Court </p></div>
+                <div class="album-item"><img src="Expo.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Stepping Forward for the Firs Time</p></div>
+                <div class="album-item"><img src="Doa.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">From Nervous to Confident</p></div>
+                <div class="album-item"><img src="BRS.JPG" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Standing With Respect</p></div>
+                <div class="album-item"><img src="JU.JPG" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Leading the Victory</p></div>
+                <div class="album-item"><img src="IP.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Symbol of our Effort</p></div>
+                <div class="album-item"><img src="MIA2.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Still a Family</p></div>
+                <div class="album-item"><img src="PM2.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">All Class Achievement</p></div>
+                <div class="album-item"><img src="MAN.JPG" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Winners' Circle</p></div>
+                <div class="album-item"><img src="T.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Stage Moment</p></div>
+                <div class="album-item"><img src="C2.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Boys' Last Chapter</p></div>
+                <div class="album-item"><img src="CBT.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Homegrown Friendship</p></div>
+                <div class="album-item"><img src="BT.jpg" alt="kegiatan 1" onclick="openLightbox(this)"><p class="photo-desc">Breaking Fast Together </p></div>
+            </div>
+
+        </section>
+    </div>
+
+    <footer id="contact">
+        <h2>Hubungi Saya</h2>
+        <p>Email: ebindiartapratama@gmail.com</p>
+        <p>Telepon (Whatsapp): +6285273002241</p>
+        <p>Alamat: Bunga Tanjung, Kab Kerinci, Prov Jambi</p>
+        <P>Lokasi Rumah: Jalan Raya Bunga Tanjung, Lorong Mayan Kuning, NO 20 RT 02 </P>
+        <div class="social-links">
+        <a href="https://www.instagram.com/ebindiarta?igsh=MTUydHB4N3BoeGI3dA==">Instagram</a>
+        </div>
+        <p>© 2025 Ebin Diarta Pratama. All rights reserved.</p>
+    </footer>
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" alt="Preview">
+    </div>
+</body>
+    <script>
+        // Toggle dark mode
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            
+            // Update toggle icon
+            if (document.body.classList.contains('dark-mode')) {
+                themeToggle.textContent = '🌙';
+            } else {
+                themeToggle.textContent = '☀️';
+            }
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '🌙';
+        }
+
+        // Mobile navigation toggle
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('#navMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        function openLightbox(img) {
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+    </script>
+</html>
+
